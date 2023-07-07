@@ -2,22 +2,22 @@ part of 'counter_bloc.dart';
 
 class CounterState extends Equatable {
   final int counter;
-  final int transactionCounter;
+  final int transactionCount;
 
   const CounterState({
     this.counter = 10,
-    this.transactionCounter = 0,
+    this.transactionCount = 0,
   });
 
   CounterState copyWith({
     int? counter,
-    int? transactionCounter,
+    int? transactionCount,
   }) =>
       CounterState(
         counter: counter ?? this.counter,
-        transactionCounter: transactionCounter ?? this.transactionCounter,
+        transactionCount: transactionCount ?? this.transactionCount,
       );
 
   @override
-  List<Object> get props => [counter, transactionCounter];
+  List<Object> get props => [counter, transactionCount];
 }

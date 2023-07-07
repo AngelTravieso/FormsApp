@@ -10,5 +10,8 @@ abstract class CounterEvent extends Equatable {
 class CounterIncreased extends CounterEvent {
   final int value;
 
-  const CounterIncreased({required this.value});
+  const CounterIncreased(this.value);
 }
+
+// CounterReset
+class CounterReset extends CounterEvent {}
