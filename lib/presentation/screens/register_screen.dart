@@ -92,7 +92,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               return null;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
@@ -104,7 +104,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               return null;
             },
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           FilledButton.tonalIcon(
             onPressed: () {
               final isValid = _formKey.currentState!.validate();
