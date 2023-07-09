@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:forms_app/infrastructure/inputs/inputs.dart';
@@ -9,7 +10,24 @@ class RegisterCubit extends Cubit<RegisterFormState> {
   RegisterCubit() : super(const RegisterFormState());
 
   void onSubmit() {
-    print('Cubit Submit: $state');
+    // Validando formulario
+    emit(state.copyWith(
+      formStatus: FormStatus.validating,
+      /*    
+      Para los campos se coloca el valor que tenga en el state, de esta manera al postear el formulario se muestran los mensajes de error, basicamente le decimos a Formz, ensucia estos campos con lo que tenga en el state, este vacio o no
+       */
+      username: Username.dirty(state.username.value),
+      password: Password.dirty(state.password.value),
+      isValid: Formz.validate([
+        state.username,
+        // TODO: state.email
+        state.password,
+      ]),
+    ));
+
+    if (kDebugMode) {
+      print('Cubit Submit: $state');
+    }
   }
 
   void usernameChanged(String value) {

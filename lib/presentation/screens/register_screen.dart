@@ -48,44 +48,32 @@ class _RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
+class _RegisterForm extends StatelessWidget {
   const _RegisterForm();
-
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final registerCubit = context.watch<RegisterCubit>();
 
+    final username = registerCubit.state.username;
+    final password = registerCubit.state.password;
+
     return Form(
-      key: _formKey,
       child: Column(
         children: [
           CustomTextFormField(
             label: 'Nombre de usuario',
-            // onChanged: (val) => registerCubir.usernameChanged,
-            onChanged: (val) {
-              registerCubit.usernameChanged(val);
-              _formKey.currentState?.validate();
-            },
-            validator: (val) {
-              if (val == null || val.isEmpty) return 'Campo requerido';
-              if (val.trim().isEmpty) return 'Campo requerido';
-              if (val.trim().length < 6) return 'Más de 6 letras';
-              return null;
-            },
+            onChanged: registerCubit.usernameChanged,
+            // Si el campo no ha sido manipulado o el formulario es valido no muestres el mensaje de error
+            errorMessage: username.isPure || username.isValid
+                ? null
+                : 'Usuario no válido',
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
             label: 'Correo electrónico',
             onChanged: (val) {
               registerCubit.emailChanged(val);
-              _formKey.currentState?.validate();
             },
             validator: (val) {
               if (val == null || val.isEmpty) return 'Campo requerido';
@@ -106,10 +94,10 @@ class _RegisterFormState extends State<_RegisterForm> {
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
-            onChanged: (val) {
-              registerCubit.passwordChanged(val);
-              _formKey.currentState?.validate();
-            },
+            onChanged: registerCubit.passwordChanged,
+            errorMessage: password.isPure || password.isValid
+                ? null
+                : 'Contraseña inválida',
             validator: (val) {
               if (val == null || val.isEmpty) return 'Campo requerido';
               if (val.trim().isEmpty) return 'Campo requerido';
@@ -120,9 +108,6 @@ class _RegisterFormState extends State<_RegisterForm> {
           const SizedBox(height: 10),
           FilledButton.tonalIcon(
             onPressed: () {
-              // final isValid = _formKey.currentState!.validate();
-              // if (!isValid) return;
-
               registerCubit.onSubmit();
             },
             icon: const Icon(Icons.save),
