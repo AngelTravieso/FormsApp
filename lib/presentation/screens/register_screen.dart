@@ -57,7 +57,9 @@ class _RegisterForm extends StatelessWidget {
 
     final username = registerCubit.state.username;
     final password = registerCubit.state.password;
+    final email = registerCubit.state.email;
 
+    /// Podria remover el [Form] y funciona, pero por coherencia lo dejo
     return Form(
       child: Column(
         children: [
@@ -69,23 +71,8 @@ class _RegisterForm extends StatelessWidget {
           const SizedBox(height: 10),
           CustomTextFormField(
             label: 'Correo electrónico',
-            onChanged: (val) {
-              registerCubit.emailChanged(val);
-            },
-            validator: (val) {
-              if (val == null || val.isEmpty) return 'Campo requerido';
-              if (val.trim().isEmpty) return 'Campo requerido';
-
-              final emailRegExp = RegExp(
-                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-              );
-
-              if (!emailRegExp.hasMatch(val)) {
-                return 'No tiene formato de correo';
-              }
-
-              return null;
-            },
+            onChanged: registerCubit.emailChanged,
+            errorMessage: email.errorMessage,
           ),
           const SizedBox(height: 10),
           CustomTextFormField(
